@@ -3,30 +3,32 @@ pipeline {
 
     stages {
 
-        stage('Job-1: Lint') {
+        stage('Build') {
             steps {
-                sh 'python3 --version'
+                echo "Building application"
+                python3 -m py_compile app.py
             }
         }
 
-        stage('Job-2: Test') {
+        stage('Test') {
             steps {
-                sh '''
+                echo "Running unit tests"
                 python3 -m venv venv
-                . venv/bin/activate
-                pip install --upgrade pip
-                pip install pytest
-                pytest
-                '''
+                sh '. venv/bin/activate && pip install pytest && pytest'
             }
         }
 
-        stage('Job-3: Build') {
+        stage('Quality') {
             steps {
-                sh '''
-                python3 app.py
-                '''
+                echo "Running code quality checks"
+                python3 -m py_compile app.py
             }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline completed for PR"
         }
     }
 }
