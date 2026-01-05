@@ -12,15 +12,20 @@ pipeline {
         stage('Job-2: Test') {
             steps {
                 sh '''
-                pip3 install pytest
-                python3 -m pytest
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install pytest
+                pytest
                 '''
             }
         }
 
         stage('Job-3: Build') {
             steps {
-                sh 'python3 app.py'
+                sh '''
+                python3 app.py
+                '''
             }
         }
     }
