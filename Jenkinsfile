@@ -13,6 +13,7 @@ pipeline {
                 sh '''
                 python3 --version
                 python3 app.py
+                echo "hello"
                 '''
             }
         }
