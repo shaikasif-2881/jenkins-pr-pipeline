@@ -5,28 +5,22 @@ pipeline {
 
         stage('Job-1: Lint') {
             steps {
-                echo "Running lint checks"
-                sh '''
-                python3 --version
-                '''
+                sh 'python3 --version'
             }
         }
 
         stage('Job-2: Test') {
             steps {
-                echo "Running tests"
                 sh '''
-                python3 -m pytest || exit 1
+                pip3 install pytest
+                python3 -m pytest
                 '''
             }
         }
 
         stage('Job-3: Build') {
             steps {
-                echo "Building application"
-                sh '''
-                python3 app.py
-                '''
+                sh 'python3 app.py'
             }
         }
     }
