@@ -2,18 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+
+        stage('Job-1: Lint') {
             steps {
-                checkout scm
+                echo "Running lint checks"
+                sh '''
+                python3 --version
+                '''
             }
         }
 
-        stage('Run Python') {
+        stage('Job-2: Test') {
             steps {
+                echo "Running tests"
                 sh '''
-                python3 --version
+                python3 -m pytest || exit 1
+                '''
+            }
+        }
+
+        stage('Job-3: Build') {
+            steps {
+                echo "Building application"
+                sh '''
                 python3 app.py
-                echo "hello"
                 '''
             }
         }
